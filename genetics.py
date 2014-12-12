@@ -14,7 +14,7 @@ browns = []
 
 class WaterBot():
 	def __init__(self):
-		self.radius = (random.random() * 100) % 3
+		self.radius = int((random.random() * 100) % 3)
 		self.path = []
 		self.rpos = 0
 		self.cpos = 0
@@ -42,12 +42,22 @@ class WaterBot():
 				self.cpos -= 1
 			#else:
 			#	print "Error: invalid move found"
-			#self.water_radius()
-			field[self.rpos][self.cpos].color = "R"
+			self.water_radius(field)
+			field[self.rpos][self.cpos].runover += 1
+			#field.print_field()
 
 	#this enables a "stay in place" move
-	#def water_radius(self):
-		#for i in range(self.radius)
+	#still buggy: if it goes off the side, doesn't do anything.
+	#I'll implement it like this because maybe it'll learn to
+	# not go off the friggin side
+	def water_radius(self, field):
+		r_min = max(0, self.rpos - self.radius)
+		r_max = min(field.rows, self.rpos + self.radius)
+		c_min = max(0, self.cpos - self.radius)
+		c_max = min(field.cols, self.cpos + self.radius)
+		for i in range(r_min, r_max):
+			for j in range(c_min, c_max):
+				field[i][j].water += 1
 
 
 
@@ -77,7 +87,7 @@ class Field():
 
 	def print_field(self):
 		for row in self.field:
-			print map(lambda s: s.color, row)
+			print map(lambda s: s.water, row)
 		#one liner?
 		#print [map(lambda s: s.water, row) for row in grid]
 
