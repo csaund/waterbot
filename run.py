@@ -3,6 +3,9 @@
 import genetics
 
 if __name__ == "__main__":
-	field = genetics.init_field(10,10)
-	genetics.print_field(field)
-	genetics.fitness(field)
+	field = genetics.Field(10,10)
+	field.print_field()
+
+	waterbot = genetics.WaterBot()
+	waterbot.random_path()
+	print waterbot.path

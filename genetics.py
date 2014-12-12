@@ -4,22 +4,22 @@
 
 import numpy as np
 from colorama import Fore
+import math
 import random
 
 VALID_MOVES = ['^',',','<','>']
 MAX_PATH_LEN = 200	#arbitrary, I should play with this.
+greens = []
+browns = []
 
 class WaterBot():
 	def __init__(self):
-		self.radius = (math.random() * 100) % 3
-		self.moves = []
+		self.radius = (random.random() * 100) % 3
+		self.path = []
 
 	def random_path(self):
 		for i in range(MAX_PATH_LEN):
-			self.moves.append(random.choice(VALID_MOVES))
-
-greens = []
-browns = []
+			self.path.append(random.choice(VALID_MOVES))
 
 
 class PlotSquare():
@@ -29,12 +29,19 @@ class PlotSquare():
 		self.color = Fore.GREEN + ' '
 
 
-def init_field(n, m):
-	field = []
-	for row in range(n):
-		col = [PlotSquare() for r in range(m)]
-		field.append(col)
-	return field
+class Field():
+	def __init__(self, n, m):
+		self.field = []
+		for row in range(n):
+			col = [PlotSquare() for r in range(m)]
+			self.field.append(col)
+
+	def print_field(self):
+		for row in self.field:
+			print map(lambda s: s.water, row)
+	#one liner?
+	#print [map(lambda s: s.water, row) for row in grid]
+
 
 
 #def generate_expression():
@@ -55,10 +62,3 @@ def fitness(grid):
 	#find total runover
 	#find std_dev watered
 	#find avg watered
-
-
-def print_field(grid):
-	for row in grid:
-		print map(lambda s: s.water, row)
-	#one liner?
-	#print [map(lambda s: s.water, row) for row in grid]
